@@ -1,7 +1,6 @@
 import 'package:contacts_app/contacts/contacts_details.page.dart';
 import 'package:contacts_app/contacts/edit_contacts.page.dart';
 import 'package:contacts_app/contacts/repository/data_classes/contacts_details.dart';
-import 'package:contacts_app/shared/pagination/pagination_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +22,6 @@ class _ContactsContentState extends State<ContactsContent> {
   int? page;
   int? pageSize;
   int? currentPage = 1;
-  final key = GlobalKey<PaginationViewState>();
   final getIt = GetIt.instance;
 
   void showMessageDiaLog({
