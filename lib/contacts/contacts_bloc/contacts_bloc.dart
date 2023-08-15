@@ -39,11 +39,9 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           } else {
             paginatedContactsList = storage.contactsList;
           }
-        } /*  else {
-          paginatedContactsList = storage.contactsList;
-        } */
+        }
 
-        if (/* response!.isFailure && */ paginatedContactsList.isEmpty) {
+        if (response!.isFailure || paginatedContactsList.isEmpty) {
           emit(ContactsErrorState(
               response!.message ?? 'Failed to receive contacts'));
         }

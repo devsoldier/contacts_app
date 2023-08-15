@@ -38,8 +38,6 @@ class StorageService {
       log('${decoded.runtimeType}');
       contactsList =
           (decoded as List).map((e) => ContactsDetails.fromJson(e)).toList();
-      // List<ContactsDetails> cast = decoded.cast<ContactsDetails?>();
-      // log('${decoded.runtimeType}');
     }
   }
 }
