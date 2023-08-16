@@ -1,9 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:contacts_app/contacts/repository/storage_service.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'contacts/repository/contacts_service.dart';
 import 'shared/service/dio_api_service/dio_api.dart';
@@ -45,24 +40,4 @@ Future<void> dependenciesSetup() async {
   dio.interceptors.addAll([
     logInterceptor,
   ]);
-}
-
-Future<void> hiveSetup() async {
-  try {
-    var appDir = await getApplicationDocumentsDirectory();
-    var hiveDb = Directory('${appDir.path}/$kBoxDirectoryPath');
-    Hive.init(hiveDb.path);
-    await Hive.openBox(kContactsBox);
-
-    log('hive instantiated');
-  } catch (e, s) {
-    log('$e\n$s');
-    // var appDir = await getApplicationDocumentsDirectory();
-
-    // var hiveDb = Directory('${appDir.path}/$kBoxDirectoryPath');
-
-    // hiveDb.delete(recursive: true);
-
-    // hiveBox = await Hive.openBox(kContactsBox);
-  }
 }
