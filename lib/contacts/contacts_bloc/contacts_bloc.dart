@@ -41,7 +41,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           }
         }
 
-        if (response?.isFailure ?? false || paginatedContactsList.isEmpty) {
+        if (response?.isFailure ?? false) {
           emit(ContactsErrorState(
               response!.message ?? 'Failed to receive contacts'));
         }
