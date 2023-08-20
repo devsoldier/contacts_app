@@ -1,15 +1,19 @@
 part of 'contacts_bloc.dart';
 
 @immutable
-sealed class ContactsState {
+sealed class ContactsState extends Equatable {
   const ContactsState();
 
   ContactsLoadedState copyWith({
     List<ContactsDetails?>? contactsDetails,
   }) {
-    return ContactsLoadedState(contactsDetails: contactsDetails);
+    if (this is ContactsLoadedState) {
+      return ContactsLoadedState(contactsDetails: contactsDetails);
+    }
+    return ContactsLoadedState.fromLoaded(contactsDetails: contactsDetails);
   }
 
+  @override
   List<Object?> get props => [];
 }
 
@@ -19,6 +23,11 @@ final class ContactsLoadedState extends ContactsState {
   final List<ContactsDetails?>? contactsDetails;
 
   const ContactsLoadedState({this.contactsDetails});
+
+  factory ContactsLoadedState.fromLoaded(
+      {List<ContactsDetails?>? contactsDetails}) {
+    return ContactsLoadedState(contactsDetails: contactsDetails);
+  }
 
   @override
   List<Object?> get props => [contactsDetails];
