@@ -1,7 +1,7 @@
 part of 'contacts_bloc.dart';
 
 @immutable
-sealed class ContactsState extends Equatable {
+sealed class ContactsState {
   const ContactsState();
 
   ContactsLoadedState copyWith({
@@ -10,7 +10,6 @@ sealed class ContactsState extends Equatable {
     return ContactsLoadedState(contactsDetails: contactsDetails);
   }
 
-  @override
   List<Object?> get props => [];
 }
 
