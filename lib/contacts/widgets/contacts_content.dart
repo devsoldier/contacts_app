@@ -39,7 +39,6 @@ class _ContactsContentState extends State<ContactsContent> {
               context
                   .read<ContactsBloc>()
                   .add(DeleteContactsEvent(list![index]));
-              setState(() {});
               Navigator.pop(context);
             },
             child: const Text('Yes', style: TextStyle(color: Colors.red)),
@@ -107,7 +106,7 @@ class _ContactsContentState extends State<ContactsContent> {
                               index: index,
                             ),
                           ),
-                        ).whenComplete(() => setState(() {}));
+                        );
                       },
                       child: Slidable(
                         endActionPane: ActionPane(
@@ -123,7 +122,7 @@ class _ContactsContentState extends State<ContactsContent> {
                                       index: index,
                                     ),
                                   ),
-                                ).whenComplete(() => setState(() {}));
+                                );
                               },
                               backgroundColor: const Color(0xFFEBF8F6),
                               foregroundColor: Colors.yellow,

@@ -62,7 +62,7 @@ class _ContactsPageState extends State<ContactsPage> {
               MaterialPageRoute(
                 builder: (context) => const AddContactsPage(),
               ),
-            ).whenComplete(() => setState(() {}));
+            );
           },
         ),
       ),
