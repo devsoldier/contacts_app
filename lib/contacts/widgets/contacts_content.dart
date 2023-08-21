@@ -106,7 +106,7 @@ class _ContactsContentState extends State<ContactsContent> {
                               index: index,
                             ),
                           ),
-                        );
+                        ).whenComplete(() => setState(() {}));
                       },
                       child: Slidable(
                         endActionPane: ActionPane(

@@ -8,7 +8,7 @@ sealed class ContactsState extends Equatable {
     List<ContactsDetails?>? contactsDetails,
   }) {
     if (this is ContactsLoadedState) {
-      return ContactsLoadedState(contactsDetails: contactsDetails);
+      return ContactsLoadedState(contactsDetails: List.from(contactsDetails!));
     }
     return ContactsLoadedState.fromLoaded(contactsDetails: contactsDetails);
   }
@@ -26,11 +26,11 @@ final class ContactsLoadedState extends ContactsState {
 
   factory ContactsLoadedState.fromLoaded(
       {List<ContactsDetails?>? contactsDetails}) {
-    return ContactsLoadedState(contactsDetails: contactsDetails);
+    return ContactsLoadedState(contactsDetails: List.from(contactsDetails!));
   }
 
   @override
-  List<Object?> get props => [contactsDetails];
+  List<Object?> get props => [List.from(contactsDetails!)];
 }
 
 final class ContactsLoadingState extends ContactsState {}

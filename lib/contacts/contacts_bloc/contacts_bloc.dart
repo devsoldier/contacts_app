@@ -49,16 +49,14 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         if (event is LoadContactsEvent) {
           pageIndex = event.pageIndex;
           storage.storeContacts(paginatedContactsList);
-          emit(state.copyWith(
-              contactsDetails: List.from(paginatedContactsList)));
+          emit(state.copyWith(contactsDetails: paginatedContactsList));
         }
 
         if (event is LoadFavouriteContactsEvent) {
           pageIndex = event.pageIndex;
           favouriteContactsList =
               favouriteFilter(paginatedContactsList).toList();
-          emit(state.copyWith(
-              contactsDetails: List.from(favouriteContactsList)));
+          emit(state.copyWith(contactsDetails: favouriteContactsList));
         }
 
         if (event is AddContactsEvent) {
@@ -73,12 +71,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           );
           storage.storeContacts(paginatedContactsList);
           if (pageIndex == 0) {
-            emit(state.copyWith(
-                contactsDetails: List.from(paginatedContactsList)));
+            emit(state.copyWith(contactsDetails: paginatedContactsList));
           } else {
             favouriteContactsList = favouriteFilter(paginatedContactsList);
-            emit(state.copyWith(
-                contactsDetails: List.from(favouriteContactsList)));
+            emit(state.copyWith(contactsDetails: favouriteContactsList));
           }
         }
 
@@ -86,12 +82,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           paginatedContactsList.remove(event.contactsDetails);
           storage.storeContacts(paginatedContactsList);
           if (pageIndex == 0) {
-            emit(state.copyWith(
-                contactsDetails: List.from(paginatedContactsList)));
+            emit(state.copyWith(contactsDetails: paginatedContactsList));
           } else {
             favouriteContactsList = favouriteFilter(paginatedContactsList);
-            emit(state.copyWith(
-                contactsDetails: List.from(favouriteContactsList)));
+            emit(state.copyWith(contactsDetails: favouriteContactsList));
           }
         }
 
@@ -109,12 +103,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
 
           storage.storeContacts(paginatedContactsList);
           if (pageIndex == 0) {
-            emit(state.copyWith(
-                contactsDetails: List.from(paginatedContactsList)));
+            emit(state.copyWith(contactsDetails: paginatedContactsList));
           } else {
             favouriteContactsList = favouriteFilter(paginatedContactsList);
-            emit(state.copyWith(
-                contactsDetails: List.from(favouriteContactsList)));
+            emit(state.copyWith(contactsDetails: favouriteContactsList));
           }
         }
 
@@ -122,11 +114,11 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           if (pageIndex == 0) {
             searchResult =
                 searchFilter(paginatedContactsList, event.searchQuery);
-            emit(state.copyWith(contactsDetails: List.from(searchResult)));
+            emit(state.copyWith(contactsDetails: searchResult));
           } else {
             searchResult =
                 searchFilter(favouriteContactsList, event.searchQuery);
-            emit(state.copyWith(contactsDetails: List.from(searchResult)));
+            emit(state.copyWith(contactsDetails: searchResult));
           }
         }
       } catch (e, s) {
@@ -145,7 +137,10 @@ List<ContactsDetails?> searchFilter(
     return (element!.firstName!
             .toLowerCase()
             .contains(searchQuery!.toLowerCase())) ||
-        (element.lastName!.toLowerCase().contains(searchQuery.toLowerCase()));
+        (element.lastName!.toLowerCase().contains(searchQuery.toLowerCase())) ||
+        ('${element.firstName} ${element.lastName}')
+            .toLowerCase()
+            .contains(searchQuery.toLowerCase());
   }).toList();
 }
 
