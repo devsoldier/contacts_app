@@ -122,7 +122,7 @@ class _ContactsContentState extends State<ContactsContent> {
                                       index: index,
                                     ),
                                   ),
-                                );
+                                ).whenComplete(() => setState(() {}));
                               },
                               backgroundColor: const Color(0xFFEBF8F6),
                               foregroundColor: Colors.yellow,
