@@ -29,8 +29,6 @@ class _AddContactsPageState extends State<AddContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final contactsListLength =
-        context.watch<ContactsBloc>().paginatedContactsList.length;
     final state = context.watch<ContactsBloc>().state;
 
     return GestureDetector(
@@ -215,7 +213,6 @@ class _AddContactsPageState extends State<AddContactsPage> {
                         }
                         context.read<ContactsBloc>().add(
                               AddContactsEvent(
-                                id: contactsListLength + 1,
                                 firstName: firstName.text,
                                 lastName: lastName.text,
                                 email: email.text,

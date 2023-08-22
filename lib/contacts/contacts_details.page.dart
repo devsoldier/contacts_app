@@ -110,14 +110,14 @@ class _ContactsDetailsPageState extends State<ContactsDetailsPage> {
                                     context.read<ContactsBloc>().add(
                                           UpdateContactsEvent(
                                               id: widget.contact?.id,
-                                              index: widget.index,
+                                              // index: widget.index,
                                               isFavourite: true),
                                         );
                                   } else {
                                     context.read<ContactsBloc>().add(
                                           UpdateContactsEvent(
                                               id: widget.contact?.id,
-                                              index: widget.index,
+                                              // index: widget.index,
                                               isFavourite: !(widget
                                                   .contact!.isFavourite!)),
                                         );
