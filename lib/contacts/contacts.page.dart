@@ -1,5 +1,7 @@
 import 'package:contacts_app/contacts/add_contacts.page.dart';
+import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../shared/theme.dart';
 import 'widgets/contacts_content.dart';
@@ -25,12 +27,15 @@ class _ContactsPageState extends State<ContactsPage> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
           title: const Text('My Contacts'),
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<ContactsBloc>().add(SyncContactsEvent());
+              },
               icon: const Icon(Icons.cached),
             ),
           ],
