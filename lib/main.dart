@@ -1,3 +1,4 @@
+import 'package:contacts_app/contacts/repository/api_service_wrapper.dart';
 import 'package:contacts_app/contacts/repository/storage_service.dart';
 
 import 'contacts/repository/contacts_service.dart';
@@ -24,7 +25,8 @@ Future<void> dependenciesSetup() async {
 
   GetIt.I.registerSingleton<ContactsService>(
     ContactsService(
-      DioApiService(dio),
+      apiService: ApiServiceWrapper(DioApiService(dio)),
+      storage: storage,
     ),
   );
 
