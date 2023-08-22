@@ -26,6 +26,8 @@ final class LoadFavouriteContactsEvent extends ContactsEvent {
   List<Object?> get props => [pageIndex];
 }
 
+final class SyncContactsEvent extends ContactsEvent {}
+
 final class AddContactsEvent extends ContactsEvent {
   final String? firstName;
   final String? lastName;
