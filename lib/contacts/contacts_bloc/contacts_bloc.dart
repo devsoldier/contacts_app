@@ -24,6 +24,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         if (event is LoadContactsEvent) {
           if (apiService.isContactsLoaded == false) {
             await apiService.loadAllContacts();
+            emit(ContactsLoadingState());
           }
           pageIndex = event.pageIndex;
           emit(state.copyWith(
@@ -31,6 +32,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         }
 
         if (event is SyncContactsEvent) {
+          emit(ContactsLoadingState());
           await apiService.syncContacts();
           emit(state.copyWith(
               contactsDetails: apiService.paginatedContactsList));
