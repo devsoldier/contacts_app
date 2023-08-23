@@ -1,5 +1,6 @@
 import 'package:contacts_app/contacts/add_contacts.page.dart';
 import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +17,31 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  void showMessageDiaLog(
+    BuildContext context,
+  ) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Do you want to sync contatcs?'),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () {
+              context.read<ContactsBloc>().add(SyncContactsEvent());
+              Navigator.pop(context);
+            },
+            child: const Text('Yes', style: TextStyle(color: Colors.red)),
+          ),
+          CupertinoDialogAction(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('No'))
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -33,9 +59,7 @@ class _ContactsPageState extends State<ContactsPage> {
           title: const Text('My Contacts'),
           actions: <Widget>[
             IconButton(
-              onPressed: () {
-                context.read<ContactsBloc>().add(SyncContactsEvent());
-              },
+              onPressed: () => showMessageDiaLog(context),
               icon: const Icon(Icons.cached),
             ),
           ],
