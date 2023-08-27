@@ -1,8 +1,17 @@
+// ignore: unused_import
+import 'dart:async';
+// ignore: unused_import
+import 'dart:developer';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:contacts_app/contacts/add_contacts.page.dart';
 import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
+import 'package:contacts_app/contacts/repository/connectivity_service.dart';
+import 'package:contacts_app/shared/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../shared/theme.dart';
 import 'widgets/contacts_content.dart';
@@ -17,6 +26,8 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  final connectivityService = GetIt.I<ConnectivityService>();
+
   void showMessageDiaLog(
     BuildContext context,
   ) async {
@@ -40,6 +51,25 @@ class _ContactsPageState extends State<ContactsPage> {
         ],
       ),
     );
+  }
+
+  void showSnackBar() async {
+    connectivityService.controller.stream.listen((event) {
+      if (!event) {
+        showNoInternetSnackBar(context, 'No internet');
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      }
+    });
+    if (!connectivityService.isOnline) {
+      connectivityService.controller.sink.add(connectivityService.isOnline);
+    }
+  }
+
+  @override
+  void initState() {
+    showSnackBar();
+    super.initState();
   }
 
   @override

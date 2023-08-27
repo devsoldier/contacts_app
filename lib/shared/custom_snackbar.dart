@@ -21,3 +21,15 @@ showErrorSnackBar(BuildContext context, String message) {
     ),
   );
 }
+
+showNoInternetSnackBar(BuildContext context, String message) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      duration: const Duration(days: 365),
+      backgroundColor: Colors.red,
+      content: Center(
+        child: Text(message),
+      ),
+    ),
+  );
+}

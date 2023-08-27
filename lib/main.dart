@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:contacts_app/contacts/repository/api_service_wrapper.dart';
+import 'package:contacts_app/contacts/repository/connectivity_service.dart';
 import 'package:contacts_app/contacts/repository/storage_service.dart';
 
 import 'contacts/repository/contacts_service.dart';
@@ -17,6 +20,11 @@ void main() async {
 }
 
 Future<void> dependenciesSetup() async {
+  final connectivityListener =
+      GetIt.I.registerSingleton<ConnectivityService>(ConnectivityService());
+
+  await connectivityListener.subscribeConnectivity();
+
   final storage = GetIt.I.registerSingleton<StorageService>(StorageService());
 
   await storage.hiveSetup();

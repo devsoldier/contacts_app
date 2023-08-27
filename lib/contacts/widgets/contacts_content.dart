@@ -202,10 +202,16 @@ class _ContactsContentState extends State<ContactsContent> {
               child: Text(state.errorMessage.toString()),
             ),
           );
-        } else {
+        } else if (state is ContactsLoadingState) {
           return const Expanded(
             child: Center(
               child: Text('Fetching contacts'),
+            ),
+          );
+        } else {
+          return const Expanded(
+            child: Center(
+              child: Text('check internet'),
             ),
           );
         }
