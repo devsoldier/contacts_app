@@ -3,7 +3,6 @@ import 'dart:async';
 // ignore: unused_import
 import 'dart:developer';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:contacts_app/contacts/add_contacts.page.dart';
 import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
 import 'package:contacts_app/contacts/repository/connectivity_service.dart';

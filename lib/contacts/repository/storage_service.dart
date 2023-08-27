@@ -26,7 +26,7 @@ class StorageService {
       hiveBox = await Hive.openBox(kContactsBox);
       log('hive initialized');
     } catch (e, s) {
-      log('$e\n$s');
+      log('hiveSetup: $e\n$s');
     }
   }
 
@@ -43,17 +43,25 @@ class StorageService {
   }
 
   Future<void> storeContacts(List<ContactsDetails?> value) async {
-    final json = jsonEncode(value);
-    await hiveBox.put(kContacts, json);
+    try {
+      final json = jsonEncode(value);
+      await hiveBox.put(kContacts, json);
+    } on Exception catch (e, s) {
+      log('hive storeContacts: $e\n$s}');
+    }
   }
 
   Future<void> retrieveContacts() async {
-    final box = await hiveBox.get(kContacts);
-    if (box != null) {
-      final decoded = jsonDecode(box);
-      log('${decoded.runtimeType}');
-      contactsList =
-          (decoded as List).map((e) => ContactsDetails.fromJson(e)).toList();
+    try {
+      final box = await hiveBox.get(kContacts);
+      if (box != null) {
+        final decoded = jsonDecode(box);
+        log('${decoded.runtimeType}');
+        contactsList =
+            (decoded as List).map((e) => ContactsDetails.fromJson(e)).toList();
+      }
+    } on Exception catch (e, s) {
+      log('hive retrieveContacts: $e\n$s}');
     }
   }
 }

@@ -20,13 +20,17 @@ class ContactsService {
   ContactsService({required this.apiService, required this.storage});
 
   Future<void> retrieveAllPage() async {
-    final response = await apiService.getContacts(pageNo: 1);
-    result = response;
-    final totalPage = response.data?.totalPages;
-    if (totalPage == null || response.isFailure) return;
-    for (int i = 1; i <= totalPage; i++) {
-      final contactsList = await apiService.getContacts(pageNo: i);
-      paginatedContactsList.addAll(contactsList.data!.data);
+    try {
+      final response = await apiService.getContacts(pageNo: 1);
+      result = response;
+      final totalPage = response.data?.totalPages;
+      if (totalPage == null || response.isFailure) return;
+      for (int i = 1; i <= totalPage; i++) {
+        final contactsList = await apiService.getContacts(pageNo: i);
+        paginatedContactsList.addAll(contactsList.data!.data);
+      }
+    } on Exception catch (e, s) {
+      log('retrieveAllPage: $e\n$s');
     }
   }
 
