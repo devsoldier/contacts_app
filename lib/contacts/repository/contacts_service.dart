@@ -40,14 +40,15 @@ class ContactsService {
       isContactsLoaded = true;
       await storage.storeContacts(paginatedContactsList);
     } else {
+      await storage.retrieveContacts();
       paginatedContactsList = storage.contactsList;
     }
   }
 
   Future<void> syncContacts() async {
     paginatedContactsList = [];
-    await retrieveAllPage();
     storage.hiveExist = true;
+    await retrieveAllPage();
     await storage.storeContacts(paginatedContactsList);
   }
 
