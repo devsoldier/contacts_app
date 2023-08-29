@@ -26,6 +26,7 @@ class ContactsPage extends StatefulWidget {
 
 class _ContactsPageState extends State<ContactsPage> {
   final connectivityService = GetIt.I<ConnectivityService>();
+  final searchController = TextEditingController();
 
   void showMessageDiaLog(
     BuildContext context,
@@ -95,19 +96,19 @@ class _ContactsPageState extends State<ContactsPage> {
           children: <Widget>[
             Container(
               color: Colors.black12,
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
                   kCanvasPadding,
                   kCanvasPadding,
                   kCanvasPadding,
                   kCanvasPadding,
                 ),
-                child: SearchWidget(),
+                child: SearchWidget(searchController: searchController),
               ),
             ),
             const Padding(
                 padding: EdgeInsets.all(kCanvasPadding), child: ContactsTab()),
-            const ContactsContent(),
+            ContactsContent(searchController: searchController),
           ],
         ),
         floatingActionButton: FloatingActionButton(

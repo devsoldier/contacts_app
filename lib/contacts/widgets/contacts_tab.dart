@@ -18,6 +18,7 @@ class _ContactsTabState extends State<ContactsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final searchQuery = context.watch<ContactsBloc>().activeSearchText;
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -43,6 +44,13 @@ class _ContactsTabState extends State<ContactsTab> {
             onToggle: (index) {
               initialIndex = index;
               setState(() {});
+              if (searchQuery.isNotEmpty) {
+                final readContactsBloc = context.read<ContactsBloc>();
+                readContactsBloc.pageIndex = initialIndex;
+                readContactsBloc.add(SearchContactsEvent(searchQuery));
+                log('page: ${context.read<ContactsBloc>().pageIndex}');
+                return;
+              }
               if (index == 0) {
                 context.read<ContactsBloc>().add(const LoadContactsEvent(0));
               } else {

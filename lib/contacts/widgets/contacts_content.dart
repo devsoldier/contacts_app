@@ -12,7 +12,8 @@ import '../../shared/theme.dart';
 import '../contacts_bloc/contacts_bloc.dart';
 
 class ContactsContent extends StatefulWidget {
-  const ContactsContent({super.key});
+  final TextEditingController searchController;
+  const ContactsContent({super.key, required this.searchController});
 
   @override
   State<ContactsContent> createState() => _ContactsContentState();
@@ -106,7 +107,9 @@ class _ContactsContentState extends State<ContactsContent> {
                               index: index,
                             ),
                           ),
-                        ).whenComplete(() => setState(() {}));
+                        ).whenComplete(() {
+                          setState(() => widget.searchController.clear());
+                        });
                       },
                       child: Slidable(
                         endActionPane: ActionPane(
@@ -122,7 +125,10 @@ class _ContactsContentState extends State<ContactsContent> {
                                       index: index,
                                     ),
                                   ),
-                                ).whenComplete(() => setState(() {}));
+                                ).whenComplete(() {
+                                  setState(
+                                      () => widget.searchController.clear());
+                                });
                               },
                               backgroundColor: const Color(0xFFEBF8F6),
                               foregroundColor: Colors.yellow,

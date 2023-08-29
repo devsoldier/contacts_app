@@ -5,7 +5,8 @@ import '../../shared/theme.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({super.key});
+  final TextEditingController searchController;
+  const SearchWidget({super.key, required this.searchController});
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
@@ -13,7 +14,7 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   final formKey = GlobalKey<FormState>();
-  final searchController = TextEditingController();
+  // final searchController = TextEditingController();
   final searchFocusNode = FocusNode();
 
   @override
@@ -29,7 +30,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         Form(
           key: formKey,
           child: TextFormField(
-            controller: searchController,
+            controller: widget.searchController,
             autocorrect: false,
             enableSuggestions: false,
             focusNode: searchFocusNode,
@@ -41,7 +42,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             onChanged: (value) {
               context
                   .read<ContactsBloc>()
-                  .add(SearchContactsEvent(searchController.text));
+                  .add(SearchContactsEvent(widget.searchController.text));
             },
           ),
         ),
