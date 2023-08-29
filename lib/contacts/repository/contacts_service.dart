@@ -100,9 +100,16 @@ class ContactsService {
 
   Future<List<ContactsDetails?>?> searchContacts({
     String? searchQuery,
+    int? pageIndex,
   }) async {
-    final filterResult =
-        ContactsHelper.searchFilter(paginatedContactsList, searchQuery);
-    return filterResult;
+    if (pageIndex == 0) {
+      final filterResult =
+          ContactsHelper.searchFilter(paginatedContactsList, searchQuery);
+      return filterResult;
+    } else {
+      final filterResult =
+          ContactsHelper.searchFilter(favouriteContactsList, searchQuery);
+      return filterResult;
+    }
   }
 }

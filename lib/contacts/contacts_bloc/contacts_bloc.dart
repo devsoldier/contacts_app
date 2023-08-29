@@ -17,13 +17,16 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   final apiService = GetIt.I<ContactsService>();
   final storage = GetIt.I<StorageService>();
   int? pageIndex;
+  String activeSearchText = '';
 
   ContactsBloc() : super(ContactsInitialState()) {
     on<ContactsEvent>((event, emit) async {
       try {
         if (event is LoadContactsEvent) {
+          if (activeSearchText.isNotEmpty) return;
           if (apiService.isContactsLoaded == false) {
             await apiService.loadAllContacts();
+
             emit(ContactsLoadingState());
           }
           pageIndex = event.pageIndex;
@@ -46,6 +49,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         if (event is LoadFavouriteContactsEvent) {
           pageIndex = event.pageIndex;
           await apiService.loadFavouriteContacts();
+          if (activeSearchText.isNotEmpty) return;
           emit(state.copyWith(
               contactsDetails: apiService.favouriteContactsList));
         }
@@ -98,8 +102,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         }
 
         if (event is SearchContactsEvent) {
+          activeSearchText = event.searchQuery.toString();
           final searchResult = await apiService.searchContacts(
             searchQuery: event.searchQuery,
+            pageIndex: pageIndex,
           );
           emit(state.copyWith(contactsDetails: searchResult));
         }
