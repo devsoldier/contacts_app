@@ -6,17 +6,17 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ConnectivityService {
   final controller = StreamController<bool>.broadcast();
+  Stream get connectivityStream => controller.stream;
   final connectivity = Connectivity();
-  ConnectivityResult connectivityResult = ConnectivityResult.none;
   bool isOnline = false;
 
-  subscribeConnectivity() async {
+  Future<void> subscribeConnectivity() async {
     try {
       log('connectivity initialized');
       Connectivity()
           .onConnectivityChanged
           .listen((ConnectivityResult result) async {
-        connectivityResult = result;
+        log('connectivity: $result');
         await checkIfHasInternet();
       });
     } on Exception catch (e, s) {
@@ -24,7 +24,7 @@ class ConnectivityService {
     }
   }
 
-  checkIfHasInternet() async {
+  Future<void> checkIfHasInternet() async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result.first.rawAddress.isNotEmpty) {

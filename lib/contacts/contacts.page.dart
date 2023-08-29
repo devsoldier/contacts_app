@@ -53,16 +53,14 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void showSnackBar() async {
-    connectivityService.controller.stream.listen((event) {
+    connectivityService.connectivityStream.listen((event) {
       if (!event) {
         showNoInternetSnackBar(context, 'No internet');
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
       }
     });
-    if (!connectivityService.isOnline) {
-      connectivityService.controller.sink.add(connectivityService.isOnline);
-    }
+    await connectivityService.checkIfHasInternet();
   }
 
   @override
