@@ -71,6 +71,12 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -119,7 +125,12 @@ class _ContactsPageState extends State<ContactsPage> {
               MaterialPageRoute(
                 builder: (context) => const AddContactsPage(),
               ),
-            );
+            ).whenComplete(() {
+              context.read<ContactsBloc>().add(const LoadContactsEvent());
+              setState(() {
+                searchController.clear();
+              });
+            });
           },
         ),
       ),

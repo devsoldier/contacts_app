@@ -52,7 +52,9 @@ class _ContactsTabState extends State<ContactsTab> {
                 return;
               }
               if (index == 0) {
-                context.read<ContactsBloc>().add(const LoadContactsEvent(0));
+                context
+                    .read<ContactsBloc>()
+                    .add(const LoadContactsEvent(pageIndex: 0));
               } else {
                 context
                     .read<ContactsBloc>()

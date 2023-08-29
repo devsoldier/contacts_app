@@ -11,7 +11,7 @@ sealed class ContactsEvent extends Equatable {
 final class LoadContactsEvent extends ContactsEvent {
   final int? pageIndex;
 
-  const LoadContactsEvent(this.pageIndex);
+  const LoadContactsEvent({this.pageIndex});
 
   @override
   List<Object?> get props => [pageIndex];

@@ -56,7 +56,7 @@ class _ContactsContentState extends State<ContactsContent> {
 
   @override
   void initState() {
-    context.read<ContactsBloc>().add(const LoadContactsEvent(0));
+    context.read<ContactsBloc>().add(const LoadContactsEvent(pageIndex: 0));
     super.initState();
   }
 
@@ -108,6 +108,9 @@ class _ContactsContentState extends State<ContactsContent> {
                             ),
                           ),
                         ).whenComplete(() {
+                          context
+                              .read<ContactsBloc>()
+                              .add(const LoadContactsEvent());
                           setState(() => widget.searchController.clear());
                         });
                       },
@@ -126,6 +129,9 @@ class _ContactsContentState extends State<ContactsContent> {
                                     ),
                                   ),
                                 ).whenComplete(() {
+                                  context
+                                      .read<ContactsBloc>()
+                                      .add(const LoadContactsEvent());
                                   setState(
                                       () => widget.searchController.clear());
                                 });

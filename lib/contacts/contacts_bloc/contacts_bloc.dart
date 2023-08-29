@@ -19,14 +19,25 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   int? pageIndex;
   String activeSearchText = '';
 
+  Future<List<ContactsDetails?>?> _searchResult(String search) async {
+    activeSearchText = search.toString();
+    final searchResult = await apiService.searchContacts(
+      searchQuery: search,
+      pageIndex: pageIndex,
+    );
+    return searchResult;
+  }
+
   ContactsBloc() : super(ContactsInitialState()) {
     on<ContactsEvent>((event, emit) async {
       try {
         if (event is LoadContactsEvent) {
-          if (activeSearchText.isNotEmpty) return;
+          if (activeSearchText.isNotEmpty) {
+            final searchResult = await _searchResult(activeSearchText);
+            emit(state.copyWith(contactsDetails: searchResult));
+          }
           if (apiService.isContactsLoaded == false) {
             await apiService.loadAllContacts();
-
             emit(ContactsLoadingState());
           }
           pageIndex = event.pageIndex;
@@ -102,11 +113,8 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         }
 
         if (event is SearchContactsEvent) {
-          activeSearchText = event.searchQuery.toString();
-          final searchResult = await apiService.searchContacts(
-            searchQuery: event.searchQuery,
-            pageIndex: pageIndex,
-          );
+          final searchResult =
+              await _searchResult(event.searchQuery.toString());
           emit(state.copyWith(contactsDetails: searchResult));
         }
       } catch (e, s) {
@@ -115,25 +123,4 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       }
     });
   }
-}
-
-List<ContactsDetails?> searchFilter(
-  List<ContactsDetails?> allContacts,
-  String? searchQuery,
-) {
-  return allContacts.where((element) {
-    return (element!.firstName!
-            .toLowerCase()
-            .contains(searchQuery!.toLowerCase())) ||
-        (element.lastName!.toLowerCase().contains(searchQuery.toLowerCase())) ||
-        ('${element.firstName} ${element.lastName}')
-            .toLowerCase()
-            .contains(searchQuery.toLowerCase());
-  }).toList();
-}
-
-List<ContactsDetails?> favouriteFilter(List<ContactsDetails?> allContacts) {
-  return allContacts.where((element) {
-    return element!.isFavourite ?? false;
-  }).toList();
 }
