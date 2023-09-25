@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:contacts_app/contacts/contacts_notifier/contacts_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:contacts_app/contacts/edit_contacts.page.dart';
+import 'package:contacts_app/contacts/screens/edit/edit_contacts.page.dart';
 import 'package:contacts_app/shared/theme.dart';
 
-import 'repository/data_classes/contacts_details.dart';
+import '../../repository/data_classes/contacts_details.dart';
 
-class ContactsDetailsPage extends StatefulWidget {
+class ContactsDetailsPage extends ConsumerStatefulWidget {
   final int index;
   final ContactsDetails? contact;
 
@@ -18,12 +20,15 @@ class ContactsDetailsPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ContactsDetailsPage> createState() => _ContactsDetailsPageState();
+  ConsumerState<ContactsDetailsPage> createState() =>
+      _ContactsDetailsPageState();
 }
 
-class _ContactsDetailsPageState extends State<ContactsDetailsPage> {
+class _ContactsDetailsPageState extends ConsumerState<ContactsDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final update = ref.read(contactsNotifierProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -37,14 +42,12 @@ class _ContactsDetailsPageState extends State<ContactsDetailsPage> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () async {
-                    await Navigator.of(context)
-                        .push(
-                          MaterialPageRoute(
-                            builder: (context) => EditContactsPage(
-                                contact: widget.contact, index: widget.index),
-                          ),
-                        )
-                        .whenComplete(() => setState(() {}));
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditContactsPage(
+                            contact: widget.contact, index: widget.index),
+                      ),
+                    );
                   },
                   child: const Text('Edit'),
                 ),
@@ -105,20 +108,16 @@ class _ContactsDetailsPageState extends State<ContactsDetailsPage> {
                               child: IconButton(
                                 onPressed: () {
                                   if (widget.contact?.isFavourite == null) {
-                                    // context.read<ContactsBloc>().add(
-                                    //       UpdateContactsEvent(
-                                    //           id: widget.contact?.id,
-                                    //           // index: widget.index,
-                                    //           isFavourite: true),
-                                    //     );
+                                    update.updateContacts(
+                                      id: widget.contact?.id,
+                                      isFavourite: true,
+                                    );
                                   } else {
-                                    // context.read<ContactsBloc>().add(
-                                    //       UpdateContactsEvent(
-                                    //           id: widget.contact?.id,
-                                    //           // index: widget.index,
-                                    //           isFavourite: !(widget
-                                    //               .contact!.isFavourite!)),
-                                    //     );
+                                    update.updateContacts(
+                                      id: widget.contact?.id,
+                                      isFavourite:
+                                          !(widget.contact!.isFavourite!),
+                                    );
                                   }
                                   setState(() {});
                                 },

@@ -3,14 +3,14 @@ import 'dart:async';
 // ignore: unused_import
 import 'dart:developer';
 
-import 'package:contacts_app/contacts/screens/add_contacts.page.dart';
+import 'package:contacts_app/contacts/screens/add/add_contacts.page.dart';
 import 'package:contacts_app/shared/services/connectivity_service.dart';
 import 'package:contacts_app/shared/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../shared/theme.dart';
+import '../../../shared/theme.dart';
 import 'widgets/contacts_content.dart';
 import 'widgets/contacts_tab.dart';
 import 'widgets/search_widget.dart';

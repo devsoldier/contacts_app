@@ -1,7 +1,7 @@
-import 'package:contacts_app/contacts/contacts_details.page.dart';
+import 'package:contacts_app/contacts/screens/details/contacts_details.page.dart';
 import 'package:contacts_app/contacts/contacts_notifier/contacts_notifier.dart';
 import 'package:contacts_app/contacts/contacts_notifier/contacts_state.dart';
-import 'package:contacts_app/contacts/edit_contacts.page.dart';
+import 'package:contacts_app/contacts/screens/edit/edit_contacts.page.dart';
 import 'package:contacts_app/contacts/repository/data_classes/contacts_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../shared/theme.dart';
+import '../../../../shared/theme.dart';
 
 class ContactsContent extends ConsumerStatefulWidget {
   final TextEditingController searchController;
@@ -53,8 +53,15 @@ class _ContactsContentState extends ConsumerState<ContactsContent> {
     );
   }
 
+  Future<void> loadData() async {
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => ref.read(contactsNotifierProvider.notifier).loadContacts());
+    Future(() => ref.read(contactsNotifierProvider.notifier).loadContacts());
+  }
+
   @override
   void initState() {
+    loadData();
     // context.read<ContactsBloc>().add(const LoadContactsEvent(pageIndex: 0));
     super.initState();
   }

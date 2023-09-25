@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../shared/theme.dart';
+import '../../../../shared/theme.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends ConsumerStatefulWidget {

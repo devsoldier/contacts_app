@@ -37,6 +37,8 @@ final class ContactsLoadedState extends ContactsState {
 
 final class ContactsLoadingState extends ContactsState {}
 
+final class ContactsNoInternetState extends ContactsState {}
+
 final class ContactsErrorState extends ContactsState {
   final String? errorMessage;
 

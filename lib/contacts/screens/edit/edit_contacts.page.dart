@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:contacts_app/shared/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'repository/data_classes/contacts_details.dart';
+import '../../repository/data_classes/contacts_details.dart';
 
 class EditContactsPage extends ConsumerStatefulWidget {
   final int index;
@@ -131,7 +131,6 @@ class _EditContactsPageState extends ConsumerState<EditContactsPage> {
                                 //               !(widget.contact!.isFavourite!)),
                                 //     );
                               }
-                              setState(() {});
                             },
                             icon: (widget.contact?.isFavourite ?? false)
                                 ? const Icon(color: Colors.red, Icons.favorite)

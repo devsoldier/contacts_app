@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'contacts/contacts.page.dart';
+import 'contacts/screens/home/contacts.page.dart';
 import 'shared/theme.dart';
 
 class App extends StatelessWidget {

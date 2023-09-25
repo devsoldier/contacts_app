@@ -1,6 +1,7 @@
 import 'package:contacts_app/contacts/contacts_notifier/contacts_state.dart';
 import 'package:contacts_app/contacts/repository/contacts_repository.dart';
 import 'package:contacts_app/contacts/repository/data_classes/contacts_details.dart';
+import 'package:contacts_app/shared/services/connectivity_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final contactsNotifierProvider =
@@ -9,7 +10,7 @@ final contactsNotifierProvider =
 class ContactsNotifier extends Notifier<ContactsState> {
   @override
   ContactsState build() {
-    return ContactsInitialState();
+    return ContactsLoadingState();
   }
 
   ContactsRepository get contactsRepository =>
@@ -28,6 +29,11 @@ class ContactsNotifier extends Notifier<ContactsState> {
 
   Future<void> loadContacts() async {
     try {
+      final internet = ref.read(connectivityService).isOnline;
+      if (!internet) {
+        state = ContactsNoInternetState();
+        return;
+      }
       final result = await contactsRepository.retrieveAllPage();
       if (result.isSuccess) {
         state = state.copyWith(contactsDetails: result.data);
@@ -73,11 +79,28 @@ class ContactsNotifier extends Notifier<ContactsState> {
     await contactsRepository.deleteContacts(contact);
   }
 
-  Future<void> updateContacts() async {
-    await contactsRepository.retrieveAllPage();
+  Future<void> updateContacts({
+    int? id,
+    String? email,
+    String? firstName,
+    String? lastName,
+    bool? isFavourite,
+  }) async {
+    await contactsRepository.updateContacts(
+      id: id,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      isFavourite: isFavourite,
+    );
+
+    state = state.copyWith(
+        contactsDetails: contactsRepository.paginatedContactsList);
   }
 
-  Future<void> searchContacts() async {
-    await contactsRepository.retrieveAllPage();
+  Future<void> searchContacts(String? searchQuery) async {
+    final searchResult = await _searchResult(searchQuery.toString());
+
+    state = state.copyWith(contactsDetails: searchResult);
   }
 }
