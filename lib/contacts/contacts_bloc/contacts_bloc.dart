@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:contacts_app/contacts/repository/connectivity_service.dart';
 import 'package:contacts_app/contacts/repository/contacts_helper.dart';
 import 'package:contacts_app/contacts/repository/data_classes/contacts_details.dart';
 import 'package:contacts_app/contacts/repository/storage_service.dart';
@@ -37,8 +38,13 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
             emit(state.copyWith(contactsDetails: searchResult));
           }
           if (apiService.isContactsLoaded == false) {
-            await apiService.loadAllContacts();
-            emit(ContactsLoadingState());
+            if (ConnectivityService().isOnline) {
+              await apiService.loadAllContacts();
+              emit(ContactsLoadingState());
+            } else {
+              emit(ContactsNoInternetState());
+              return;
+            }
           }
           pageIndex = event.pageIndex;
           emit(state.copyWith(
