@@ -1,4 +1,6 @@
-part of 'contacts_bloc.dart';
+import 'package:contacts_app/contacts/repository/data_classes/contacts_details.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 sealed class ContactsState extends Equatable {

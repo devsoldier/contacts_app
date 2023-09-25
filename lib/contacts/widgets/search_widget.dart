@@ -1,18 +1,17 @@
-import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../shared/theme.dart';
 import 'package:flutter/material.dart';
 
-class SearchWidget extends StatefulWidget {
+class SearchWidget extends ConsumerStatefulWidget {
   final TextEditingController searchController;
   const SearchWidget({super.key, required this.searchController});
 
   @override
-  State<SearchWidget> createState() => _SearchWidgetState();
+  ConsumerState<SearchWidget> createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends State<SearchWidget> {
+class _SearchWidgetState extends ConsumerState<SearchWidget> {
   final formKey = GlobalKey<FormState>();
   // final searchController = TextEditingController();
   final searchFocusNode = FocusNode();
@@ -40,9 +39,9 @@ class _SearchWidgetState extends State<SearchWidget> {
               hintText: 'Search Contact',
             ),
             onChanged: (value) {
-              context
-                  .read<ContactsBloc>()
-                  .add(SearchContactsEvent(widget.searchController.text));
+              // context
+              //     .read<ContactsBloc>()
+              //     .add(SearchContactsEvent(widget.searchController.text));
             },
           ),
         ),

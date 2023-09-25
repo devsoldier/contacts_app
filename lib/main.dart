@@ -1,42 +1,30 @@
-import 'dart:async';
-
-import 'package:contacts_app/contacts/repository/api_service_wrapper.dart';
-import 'package:contacts_app/contacts/repository/connectivity_service.dart';
-import 'package:contacts_app/contacts/repository/storage_service.dart';
-
-import 'contacts/repository/contacts_service.dart';
-import 'shared/service/dio_api_service/dio_api.dart';
-import 'shared/service/dio_api_service/dio_config.dart';
+import 'package:contacts_app/shared/services/api/dio_api_service/dio_config.dart';
+import 'package:contacts_app/shared/services/connectivity_service.dart';
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'package:flutter/material.dart';
 
+import 'shared/services/storage/shared_pref/shared_pref_storage_service.dart';
+
 void main() async {
+  final container = ProviderContainer();
   WidgetsFlutterBinding.ensureInitialized();
-  await dependenciesSetup();
-  runApp(const App());
-}
-
-Future<void> dependenciesSetup() async {
-  final connectivityListener =
-      GetIt.I.registerSingleton<ConnectivityService>(ConnectivityService());
-
-  await connectivityListener.subscribeConnectivity();
-
-  final storage = GetIt.I.registerSingleton<StorageService>(StorageService());
-
-  await storage.hiveSetup();
-
-  await storage.retrieveContacts();
-
-  GetIt.I.registerSingleton<ContactsService>(
-    ContactsService(
-      apiService: ApiServiceWrapper(DioApiService(dio)),
-      storage: storage,
+  await dependenciesSetup(container);
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const App(),
     ),
   );
+}
+
+Future<void> dependenciesSetup(ProviderContainer container) async {
+  await Future.wait([
+    container.read(connectivityService).subscribeConnectivity(),
+    container.read(sharedPreferencesStorageService).initStorage(),
+  ]);
 
   final logInterceptor = LogInterceptor(
     request: true,

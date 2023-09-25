@@ -1,14 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final connectivityService = Provider.autoDispose((ref) {
+  ref.keepAlive();
+  return ConnectivityService(connectivity: Connectivity());
+});
 
 class ConnectivityService {
   final controller = StreamController<bool>.broadcast();
   Stream get connectivityStream => controller.stream;
-  final connectivity = Connectivity();
+  Connectivity? connectivity;
   bool isOnline = false;
+  ConnectivityService({this.connectivity});
 
   Future<void> subscribeConnectivity() async {
     try {

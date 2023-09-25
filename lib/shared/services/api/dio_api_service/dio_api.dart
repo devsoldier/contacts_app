@@ -1,10 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:contacts_app/shared/environment_config.dart';
+import 'package:contacts_app/shared/services/api/api.dart';
 import 'package:dio/dio.dart';
-
-import '../api.dart';
-import '../environment_config.dart';
 import 'dio_config.dart';
 
 class DioApiService extends ApiService {

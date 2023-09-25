@@ -1,9 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
 import 'package:contacts_app/contacts/edit_contacts.page.dart';
 import 'package:contacts_app/shared/theme.dart';
 
@@ -107,20 +105,20 @@ class _ContactsDetailsPageState extends State<ContactsDetailsPage> {
                               child: IconButton(
                                 onPressed: () {
                                   if (widget.contact?.isFavourite == null) {
-                                    context.read<ContactsBloc>().add(
-                                          UpdateContactsEvent(
-                                              id: widget.contact?.id,
-                                              // index: widget.index,
-                                              isFavourite: true),
-                                        );
+                                    // context.read<ContactsBloc>().add(
+                                    //       UpdateContactsEvent(
+                                    //           id: widget.contact?.id,
+                                    //           // index: widget.index,
+                                    //           isFavourite: true),
+                                    //     );
                                   } else {
-                                    context.read<ContactsBloc>().add(
-                                          UpdateContactsEvent(
-                                              id: widget.contact?.id,
-                                              // index: widget.index,
-                                              isFavourite: !(widget
-                                                  .contact!.isFavourite!)),
-                                        );
+                                    // context.read<ContactsBloc>().add(
+                                    //       UpdateContactsEvent(
+                                    //           id: widget.contact?.id,
+                                    //           // index: widget.index,
+                                    //           isFavourite: !(widget
+                                    //               .contact!.isFavourite!)),
+                                    //     );
                                   }
                                   setState(() {});
                                 },

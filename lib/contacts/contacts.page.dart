@@ -3,29 +3,26 @@ import 'dart:async';
 // ignore: unused_import
 import 'dart:developer';
 
-import 'package:contacts_app/contacts/add_contacts.page.dart';
-import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
-import 'package:contacts_app/contacts/repository/connectivity_service.dart';
+import 'package:contacts_app/contacts/screens/add_contacts.page.dart';
+import 'package:contacts_app/shared/services/connectivity_service.dart';
 import 'package:contacts_app/shared/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../shared/theme.dart';
 import 'widgets/contacts_content.dart';
 import 'widgets/contacts_tab.dart';
 import 'widgets/search_widget.dart';
 
-class ContactsPage extends StatefulWidget {
+class ContactsPage extends ConsumerStatefulWidget {
   const ContactsPage({super.key});
 
   @override
-  State<ContactsPage> createState() => _ContactsPageState();
+  ConsumerState<ContactsPage> createState() => _ContactsPageState();
 }
 
-class _ContactsPageState extends State<ContactsPage> {
-  final connectivityService = GetIt.I<ConnectivityService>();
+class _ContactsPageState extends ConsumerState<ContactsPage> {
   final searchController = TextEditingController();
 
   void showMessageDiaLog(
@@ -38,7 +35,7 @@ class _ContactsPageState extends State<ContactsPage> {
         actions: [
           CupertinoDialogAction(
             onPressed: () {
-              context.read<ContactsBloc>().add(SyncContactsEvent());
+              // context.read<ContactsBloc>().add(SyncContactsEvent());
               Navigator.pop(context);
             },
             child: const Text('Yes', style: TextStyle(color: Colors.red)),
@@ -54,14 +51,17 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void showSnackBar() async {
-    connectivityService.connectivityStream.listen((event) {
+    final connectivity = ref.read(connectivityService);
+    connectivity.connectivityStream.listen((event) {
       if (!event) {
         showNoInternetSnackBar(context, 'No internet');
+        setState(() {});
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        setState(() {});
       }
     });
-    await connectivityService.checkIfHasInternet();
+    await ref.read(connectivityService).checkIfHasInternet();
   }
 
   @override
@@ -125,12 +125,7 @@ class _ContactsPageState extends State<ContactsPage> {
               MaterialPageRoute(
                 builder: (context) => const AddContactsPage(),
               ),
-            ).whenComplete(() {
-              context.read<ContactsBloc>().add(const LoadContactsEvent());
-              setState(() {
-                searchController.clear();
-              });
-            });
+            );
           },
         ),
       ),

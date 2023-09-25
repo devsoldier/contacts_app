@@ -1,24 +1,22 @@
 // ignore: unused_import
 import 'dart:developer';
 
-import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class ContactsTab extends StatefulWidget {
+class ContactsTab extends ConsumerStatefulWidget {
   const ContactsTab({super.key});
 
   @override
-  State<ContactsTab> createState() => _ContactsTabState();
+  ConsumerState<ContactsTab> createState() => _ContactsTabState();
 }
 
-class _ContactsTabState extends State<ContactsTab> {
+class _ContactsTabState extends ConsumerState<ContactsTab> {
   int? initialIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final searchQuery = context.watch<ContactsBloc>().activeSearchText;
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -43,23 +41,23 @@ class _ContactsTabState extends State<ContactsTab> {
             labels: const ['All', 'Favourite'],
             onToggle: (index) {
               initialIndex = index;
-              setState(() {});
-              if (searchQuery.isNotEmpty) {
-                final readContactsBloc = context.read<ContactsBloc>();
-                readContactsBloc.pageIndex = initialIndex;
-                readContactsBloc.add(SearchContactsEvent(searchQuery));
-                log('page: ${context.read<ContactsBloc>().pageIndex}');
-                return;
-              }
-              if (index == 0) {
-                context
-                    .read<ContactsBloc>()
-                    .add(const LoadContactsEvent(pageIndex: 0));
-              } else {
-                context
-                    .read<ContactsBloc>()
-                    .add(const LoadFavouriteContactsEvent(1));
-              }
+              // setState(() {});
+              // if (searchQuery.isNotEmpty) {
+              //   final readContactsBloc = context.read<ContactsBloc>();
+              //   readContactsBloc.pageIndex = initialIndex;
+              //   readContactsBloc.add(SearchContactsEvent(searchQuery));
+              //   log('page: ${context.read<ContactsBloc>().pageIndex}');
+              //   return;
+              // }
+              // if (index == 0) {
+              //   context
+              //       .read<ContactsBloc>()
+              //       .add(const LoadContactsEvent(pageIndex: 0));
+              // } else {
+              //   context
+              //       .read<ContactsBloc>()
+              //       .add(const LoadFavouriteContactsEvent(1));
+              // }
             }),
       ),
     );

@@ -1,18 +1,19 @@
-import 'package:contacts_app/contacts/contacts_bloc/contacts_bloc.dart';
+import 'package:contacts_app/contacts/contacts_notifier/contacts_notifier.dart';
+import 'package:contacts_app/contacts/contacts_notifier/contacts_state.dart';
 import 'package:contacts_app/shared/custom_snackbar.dart';
 import 'package:contacts_app/shared/theme.dart';
 import 'package:contacts_app/shared/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddContactsPage extends StatefulWidget {
+class AddContactsPage extends ConsumerStatefulWidget {
   const AddContactsPage({super.key});
 
   @override
-  State<AddContactsPage> createState() => _AddContactsPageState();
+  ConsumerState<AddContactsPage> createState() => _AddContactsPageState();
 }
 
-class _AddContactsPageState extends State<AddContactsPage> {
+class _AddContactsPageState extends ConsumerState<AddContactsPage> {
   final formKey = GlobalKey<FormState>();
   final firstName = TextEditingController();
   final lastName = TextEditingController();
@@ -29,7 +30,8 @@ class _AddContactsPageState extends State<AddContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<ContactsBloc>().state;
+    final state = ref.watch(contactsNotifierProvider);
+    final update = ref.read(contactsNotifierProvider.notifier);
 
     return GestureDetector(
       onTap: () {
@@ -202,7 +204,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
               Padding(
                   padding: const EdgeInsets.only(top: 35),
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         FocusScopeNode currentFocus = FocusScope.of(context);
 
                         if (!currentFocus.hasPrimaryFocus) {
@@ -211,14 +213,13 @@ class _AddContactsPageState extends State<AddContactsPage> {
                         if (!(formKey.currentState?.validate() ?? false)) {
                           return;
                         }
-                        context.read<ContactsBloc>().add(
-                              AddContactsEvent(
-                                firstName: firstName.text,
-                                lastName: lastName.text,
-                                email: email.text,
-                                isFavourite: isFavourite,
-                              ),
-                            );
+                        await update.addContacts(
+                          email: email.text,
+                          firstName: firstName.text,
+                          lastName: lastName.text,
+                          isFavourite: isFavourite,
+                        );
+                        if (!mounted) return;
                         if (state is ContactsLoadedState) {
                           showSnackBar(context, 'Contact Added');
                         } else {
