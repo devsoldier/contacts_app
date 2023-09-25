@@ -53,19 +53,6 @@ class _ContactsContentState extends ConsumerState<ContactsContent> {
     );
   }
 
-  Future<void> loadData() async {
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //     (_) => ref.read(contactsNotifierProvider.notifier).loadContacts());
-    Future(() => ref.read(contactsNotifierProvider.notifier).loadContacts());
-  }
-
-  @override
-  void initState() {
-    loadData();
-    // context.read<ContactsBloc>().add(const LoadContactsEvent(pageIndex: 0));
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(contactsNotifierProvider);

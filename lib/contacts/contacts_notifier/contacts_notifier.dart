@@ -10,6 +10,7 @@ final contactsNotifierProvider =
 class ContactsNotifier extends Notifier<ContactsState> {
   @override
   ContactsState build() {
+    loadContacts();
     return ContactsLoadingState();
   }
 
